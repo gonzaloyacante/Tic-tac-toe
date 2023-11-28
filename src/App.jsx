@@ -2,10 +2,11 @@ import { useState } from "react";
 import "./App.css";
 
 import { Square } from "./components/Square.jsx";
+import { WinnerModal } from "./components/WinnerModal.jsx";
 
 const TURNS = {
-  X: "🔴",
-  O: "🟢",
+  X: "✕",
+  O: "○",
 };
 
 const WINNER_COMBOS = [
@@ -44,6 +45,10 @@ function App() {
     setWinner(null);
   };
 
+  const checkEndGame = (newBoard) => {
+    return newBoard.every((square) => square !== null)
+  }
+
   const updateBoard = (index) => {
     if (board[index] || winner) return;
 
@@ -57,6 +62,8 @@ function App() {
     const newWinner = checkWinner(newBoard);
     if (newWinner) {
       setWinner(newWinner);
+    } else if (checkEndGame(newBoard)) {
+      setWinner(false)
     }
   };
 
@@ -64,6 +71,7 @@ function App() {
     <main className="board">
       <h1>Tic Tac Toe</h1>
       <button onClick={resetGame}>Empezar de nuevo</button>
+
       <section className="game">
         {board.map((square, index) => {
           return (
@@ -73,10 +81,13 @@ function App() {
           );
         })}
       </section>
+
       <section className="turn">
         <Square isSelected={turn === TURNS.X}>{TURNS.X}</Square>
         <Square isSelected={turn === TURNS.O}>{TURNS.O}</Square>
       </section>
+
+      <WinnerModal winner={winner} resetGame={resetGame}></WinnerModal>
     </main>
   );
 }
