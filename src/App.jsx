@@ -2,7 +2,7 @@ import { useState } from "react";
 import confetti from "canvas-confetti";
 
 import { TURNS } from "./constants.js";
-import { checkWinner, checkEndGame } from "./logic.js";
+import { checkWinner, checkEndGame, getNullSquares } from "./logic.js";
 import { saveGameToStorage, resetGameToStorage } from "./storage.js";
 
 import "./App.css";
@@ -33,6 +33,31 @@ function App() {
     resetGameToStorage()
   };
 
+  const updateAI = ({newBoard, newTurn}) => {
+    setTimeout(() => {
+        const nullSquares = getNullSquares(newBoard);
+        const randomSquare =
+          nullSquares[Math.floor(Math.random() * nullSquares.length)];
+        newBoard[randomSquare] = newTurn;
+        console.log({newBoard});
+        setBoard(newBoard);
+
+        newTurn = TURNS.X;
+        console.log( newTurn + ' 2' );
+        setTurn(newTurn);
+
+        saveGameToStorage({ newBoard, newTurn });
+
+        const newWinnerAI = checkWinner(newBoard);
+        if (newWinnerAI) {
+          confetti();
+          return setWinner(newWinnerAI);
+        } else if (checkEndGame(newBoard)) {
+          return setWinner(false);
+        }
+      }, 1000);
+  }
+
   const updateBoard = (index) => {
     if (board[index] || winner) return;
 
@@ -40,7 +65,7 @@ function App() {
     newBoard[index] = turn;
     setBoard(newBoard);
 
-    const newTurn = turn === TURNS.X ? TURNS.O : TURNS.X;
+    const newTurn = TURNS.O;
     setTurn(newTurn);
 
     saveGameToStorage({ newBoard, newTurn });
@@ -48,10 +73,13 @@ function App() {
     const newWinner = checkWinner(newBoard);
     if (newWinner) {
       confetti();
-      setWinner(newWinner);
+      return setWinner(newWinner);
     } else if (checkEndGame(newBoard)) {
-      setWinner(false);
+      return setWinner(false);
     }
+    console.log( newTurn + ' 1' );
+
+    updateAI({newBoard, newTurn})
   };
 
   return (
