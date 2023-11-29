@@ -1,9 +1,9 @@
 import { useState } from "react";
 import confetti from "canvas-confetti";
 
-import { TURNS, CONFETTI_CONFIG, AI_DELAY } from "./constants.js";
-import { checkWinner, checkEndGame, getNullSquares } from "./logic.js";
-import { saveGameToStorage, resetGameToStorage } from "./storage.js";
+import { TURNS, CONFETTI_CONFIG, AI_DELAY } from "./utils/constants.js";
+import { checkWinner, checkEndGame, getNullSquares } from "./utils/logic.js";
+import { saveGameToStorage, resetGameToStorage } from "./utils/storage.js";
 
 import "./App.css";
 
@@ -84,16 +84,26 @@ function App() {
   };
 
   return (
-    <main className="game">
-      <h1>Tic Tac Toe</h1>
-      <button onClick={resetGame}>Empezar de nuevo</button>
+    <>
+      <main className="game">
+        <h1>Tic Tac Toe</h1>
+        <button onClick={resetGame}>Empezar de nuevo</button>
 
-      <Board board={board} updateBoard={updateBoard} />
+        <Board board={board} updateBoard={updateBoard} />
 
-      <Turn turn={turn} />
+        <Turn turn={turn} />
 
-      <WinnerModal winner={winner} resetGame={resetGame} />
-    </main>
+        <WinnerModal winner={winner} resetGame={resetGame} />
+      </main>
+      <footer>
+        <a
+          href="https://github.com/gonzaloyacante"
+          rel="noreferrer"
+          target="_blank">
+          Built by Gonzalo Yacante
+        </a>
+      </footer>
+    </>
   );
 }
 

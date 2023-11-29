@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Square } from "./Square.jsx";
 
-import { TURNS } from "../constants.js";
+import { TURNS } from "../utils/constants.js";
 
 export const Turn = ({ turn }) => {
   const className = `square is-selected ${
