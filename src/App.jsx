@@ -1,7 +1,7 @@
 import { useState } from "react";
 import confetti from "canvas-confetti";
 
-import { TURNS } from "./constants.js";
+import { TURNS, CONFETTI_CONFIG, AI_DELAY } from "./constants.js";
 import { checkWinner, checkEndGame, getNullSquares } from "./logic.js";
 import { saveGameToStorage, resetGameToStorage } from "./storage.js";
 
@@ -48,18 +48,14 @@ function App() {
 
       const newWinnerAI = checkWinner(newBoard);
       if (newWinnerAI) {
-        confetti({
-          particleCount: 500,
-          spread: 70,
-          origin: { y: 0.7 },
-        });
+        confetti(CONFETTI_CONFIG);
         resetGame();
         return setWinner(newWinnerAI);
       } else if (checkEndGame(newBoard)) {
         resetGame();
         return setWinner(false);
       }
-    }, 1000);
+    }, AI_DELAY);
   };
 
   const updateBoard = (index) => {
@@ -76,11 +72,7 @@ function App() {
 
     const newWinner = checkWinner(newBoard);
     if (newWinner) {
-      confetti({
-        particleCount: 500,
-        spread: 70,
-        origin: { y: 0.7 },
-      });
+      confetti(CONFETTI_CONFIG);
       resetGame();
       return setWinner(newWinner);
     } else if (checkEndGame(newBoard)) {

@@ -13,3 +13,11 @@ export const WINNER_COMBOS = [
   [0, 4, 8],
   [2, 4, 6],
 ];
+
+export const CONFETTI_CONFIG = {
+  particleCount: 500,
+  spread: 70,
+  origin: { y: 0.7 },
+};
+
+export const AI_DELAY = 1000;
