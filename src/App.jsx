@@ -7,7 +7,7 @@ import { saveGameToStorage, resetGameToStorage } from "./storage.js";
 
 import "./App.css";
 
-import { Square } from "./components/Square.jsx";
+import { Board } from "./components/Board.jsx";
 import { WinnerModal } from "./components/WinnerModal.jsx";
 import { Turn } from "./components/Turn.jsx";
 
@@ -21,42 +21,46 @@ function App() {
   const [turn, setTurn] = useState(() => {
     const turnFromStorage = window.localStorage.getItem("turn");
     if (turnFromStorage) return turnFromStorage;
-    return TURNS.X;
+    return TURNS.USER;
   });
   const [winner, setWinner] = useState(null);
 
   const resetGame = () => {
     setBoard(Array(9).fill(null));
-    setTurn(TURNS.X);
+    setTurn(TURNS.USER);
     setWinner(null);
 
-    resetGameToStorage()
+    resetGameToStorage();
   };
 
-  const updateAI = ({newBoard, newTurn}) => {
+  const updateAI = ({ newBoard, newTurn }) => {
     setTimeout(() => {
-        const nullSquares = getNullSquares(newBoard);
-        const randomSquare =
-          nullSquares[Math.floor(Math.random() * nullSquares.length)];
-        newBoard[randomSquare] = newTurn;
-        console.log({newBoard});
-        setBoard(newBoard);
+      const nullSquares = getNullSquares(newBoard);
+      const randomSquare =
+        nullSquares[Math.floor(Math.random() * nullSquares.length)];
+      newBoard[randomSquare] = newTurn;
+      setBoard(newBoard);
 
-        newTurn = TURNS.X;
-        console.log( newTurn + ' 2' );
-        setTurn(newTurn);
+      newTurn = TURNS.USER;
+      setTurn(newTurn);
 
-        saveGameToStorage({ newBoard, newTurn });
+      saveGameToStorage({ newBoard, newTurn });
 
-        const newWinnerAI = checkWinner(newBoard);
-        if (newWinnerAI) {
-          confetti();
-          return setWinner(newWinnerAI);
-        } else if (checkEndGame(newBoard)) {
-          return setWinner(false);
-        }
-      }, 1000);
-  }
+      const newWinnerAI = checkWinner(newBoard);
+      if (newWinnerAI) {
+        confetti({
+          particleCount: 500,
+          spread: 70,
+          origin: { y: 0.7 },
+        });
+        resetGame();
+        return setWinner(newWinnerAI);
+      } else if (checkEndGame(newBoard)) {
+        resetGame();
+        return setWinner(false);
+      }
+    }, 1000);
+  };
 
   const updateBoard = (index) => {
     if (board[index] || winner) return;
@@ -65,21 +69,26 @@ function App() {
     newBoard[index] = turn;
     setBoard(newBoard);
 
-    const newTurn = TURNS.O;
+    const newTurn = TURNS.COMPUTER;
     setTurn(newTurn);
 
     saveGameToStorage({ newBoard, newTurn });
 
     const newWinner = checkWinner(newBoard);
     if (newWinner) {
-      confetti();
+      confetti({
+        particleCount: 500,
+        spread: 70,
+        origin: { y: 0.7 },
+      });
+      resetGame();
       return setWinner(newWinner);
     } else if (checkEndGame(newBoard)) {
+      resetGame();
       return setWinner(false);
     }
-    console.log( newTurn + ' 1' );
 
-    updateAI({newBoard, newTurn})
+    updateAI({ newBoard, newTurn });
   };
 
   return (
@@ -87,19 +96,11 @@ function App() {
       <h1>Tic Tac Toe</h1>
       <button onClick={resetGame}>Empezar de nuevo</button>
 
-      <section className="board">
-        {board.map((square, index) => {
-          return (
-            <Square key={index} index={index} updateBoard={updateBoard}>
-              {square}
-            </Square>
-          );
-        })}
-      </section>
+      <Board board={board} updateBoard={updateBoard} />
 
-      <Turn turn={turn}></Turn>
+      <Turn turn={turn} />
 
-      <WinnerModal winner={winner} resetGame={resetGame}></WinnerModal>
+      <WinnerModal winner={winner} resetGame={resetGame} />
     </main>
   );
 }

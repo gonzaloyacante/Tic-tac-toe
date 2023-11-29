@@ -1,6 +1,6 @@
 export const TURNS = {
-  X: "✕",
-  O: "○",
+  USER: "✕",
+  COMPUTER: "○",
 };
 
 export const WINNER_COMBOS = [
