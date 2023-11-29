@@ -9,6 +9,7 @@ import "./App.css";
 
 import { Square } from "./components/Square.jsx";
 import { WinnerModal } from "./components/WinnerModal.jsx";
+import { Turn } from "./components/Turn.jsx";
 
 function App() {
   const [board, setBoard] = useState(() => {
@@ -54,11 +55,11 @@ function App() {
   };
 
   return (
-    <main className="board">
+    <main className="game">
       <h1>Tic Tac Toe</h1>
       <button onClick={resetGame}>Empezar de nuevo</button>
 
-      <section className="game">
+      <section className="board">
         {board.map((square, index) => {
           return (
             <Square key={index} index={index} updateBoard={updateBoard}>
@@ -68,10 +69,7 @@ function App() {
         })}
       </section>
 
-      <section className="turn">
-        <Square isSelected={turn === TURNS.X}>{TURNS.X}</Square>
-        <Square isSelected={turn === TURNS.O}>{TURNS.O}</Square>
-      </section>
+      <Turn turn={turn}></Turn>
 
       <WinnerModal winner={winner} resetGame={resetGame}></WinnerModal>
     </main>
