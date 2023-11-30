@@ -1,7 +1,12 @@
 import { useState } from "react";
 import confetti from "canvas-confetti";
 
-import { TURNS, CONFETTI_CONFIG, AI_DELAY } from "./utils/constants.js";
+import {
+  TURNS,
+  CONFETTI_CONFIG,
+  AI_DELAY,
+  COUNT_GAMES,
+} from "./utils/constants.js";
 import { checkWinner, checkEndGame, getNullSquares } from "./utils/logic.js";
 import { saveGameToStorage, resetGameToStorage } from "./utils/storage.js";
 
@@ -48,6 +53,7 @@ function App() {
 
       const newWinnerAI = checkWinner(newBoard);
       if (newWinnerAI) {
+        COUNT_GAMES.COMPUTER = COUNT_GAMES.COMPUTER + 1;
         confetti(CONFETTI_CONFIG);
         resetGame();
         return setWinner(newWinnerAI);
@@ -72,6 +78,7 @@ function App() {
 
     const newWinner = checkWinner(newBoard);
     if (newWinner) {
+      COUNT_GAMES.USER = COUNT_GAMES.USER + 1;
       confetti(CONFETTI_CONFIG);
       resetGame();
       return setWinner(newWinner);
@@ -87,13 +94,17 @@ function App() {
     <>
       <main className="game">
         <h1>Tic Tac Toe</h1>
-        <button onClick={resetGame}>Empezar de nuevo</button>
+        <button onClick={resetGame}>Reset Game</button>
 
         <Board board={board} updateBoard={updateBoard} />
 
-        <Turn turn={turn} />
+        <Turn turn={turn} countGames={COUNT_GAMES} />
 
-        <WinnerModal winner={winner} resetGame={resetGame} />
+        <WinnerModal
+          winner={winner}
+          resetGame={resetGame}
+          countGames={COUNT_GAMES}
+        />
       </main>
       <footer>
         <a

@@ -3,6 +3,11 @@ export const TURNS = {
   COMPUTER: "○",
 };
 
+export let COUNT_GAMES = {
+  USER: 0,
+  COMPUTER: 0,
+}
+
 export const WINNER_COMBOS = [
   [0, 1, 2],
   [3, 4, 5],

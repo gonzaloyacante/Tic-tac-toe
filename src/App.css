@@ -80,10 +80,18 @@ body {
 .turn {
   display: flex;
   justify-content: center;
+  align-items: center;
+}
+.turn div{
+  display: flex;
+  justify-content: center;
   margin: 15px auto;
   width: fit-content;
   position: relative;
   border-radius: 10px;
+}
+.turn .count-game {
+  display: block;
 }
 .turn .square,
 .winner .square {
@@ -135,22 +143,28 @@ body {
 .winner .text {
   background: #111;
   height: 300px;
-  width: 300px;
+  width: 340px;
   border: 2px solid #eee;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   gap: 20px;
 }
+.winner header {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 20px;
+}
+.winner header div {
+  min-width: 80px;
+}
 .winner .win {
-  margin: 0 auto;
-  width: fit-content;
   border: 2px solid #eee;
   border-radius: 10px;
-  display: flex;
-  gap: 15px;
 }
 .winner button {
   margin: 0 auto;
@@ -163,4 +177,8 @@ footer {
 footer a {
   color: #eee;
   text-underline-offset: 3px;
+}
+
+.count-game {
+  display: block;
 }
