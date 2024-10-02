@@ -16,9 +16,9 @@ Este proyecto fue creado con el objetivo de practicar y mejorar habilidades en d
 
 ## Tecnologías utilizadas:
 
-**ReactJS**: Para la estructura del juego y el diseño de la página.
-**JavaScript**: Para la lógica del juego, detección de ganadores y funcionalidad de la IA básica.
-**CSS3**: Para el estilo y el diseño visual del tablero.
+- **ReactJS**: Para la estructura del juego y el diseño de la página.
+- **JavaScript**: Para la lógica del juego, detección de ganadores y funcionalidad de la IA básica.
+- **CSS3**: Para el estilo y el diseño visual del tablero.
 
 ## Próximas mejoras
 
